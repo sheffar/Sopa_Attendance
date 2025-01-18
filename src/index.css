@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+body {
+    font-family: "Sofia", sans-serif;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    
+}
+
+.nav {
+    backdrop-filter: blur(10px);
+
+}
+.links{
+    backdrop-filter: blur(10px);
+
+}
