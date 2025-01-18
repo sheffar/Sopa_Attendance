@@ -4,12 +4,14 @@ import { FaFlag, FaHouse } from "react-icons/fa6"
 import { useEffect, useState } from "react"
 import SuccessMessage, { Count } from "../Count"
 import { ErrorMessage } from "../ErrorMessage"
+import Spinner from "../Spinner"
 
 export const Attendance = () => {
 
   const [showSuccess, setShowSuccess] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState("");
   const [todaysAttandance, setTodaysAttandance] = useState([])
+  const [loading, setLoading] = useState(false)
 
   //Hide input state
   const [hide, setHide] = useState(false)
@@ -110,6 +112,7 @@ export const Attendance = () => {
 
 
     try {
+      setLoading(true)
       const reqData = await fetch("https://attendance-backend-rosy.vercel.app/submit", {
         method: "POST",
         headers: { 'Content-Type': 'application/json' },
@@ -142,6 +145,9 @@ export const Attendance = () => {
     } catch (error) {
       console.log(error.message)
       setError(error.message);
+    } finally {
+      setLoading(false)
+
     }
   }
 
@@ -222,7 +228,9 @@ export const Attendance = () => {
 
 
 
-
+  if (loading) {
+    return <Spinner loading={loading} />;
+  }
 
 
   return (
