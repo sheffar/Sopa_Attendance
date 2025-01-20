@@ -157,8 +157,13 @@ export const Attendance = () => {
       const response = await fetch("https://attendance-backend-rosy.vercel.app/currentusers")
       const result = await response.json()
 
-      setTodaysAttandance(result)
 
+      if (response.ok) {
+        setTodaysAttandance(result)
+
+      } else {
+        console.log(e.message)
+      }
     } catch (e) {
       console.log(e.message)
     }
@@ -361,8 +366,7 @@ export const Attendance = () => {
               <FaTimesCircle className="text-2xl absolute top-2 cursor-pointer right-2" onClick={close} />
 
               <BiError className=" text-4xl" />
-              {/* <p className="text-white text-center">{Error}</p> */}
-              <p>usernmex</p>
+              <p>username</p>
 
             </ErrorMessage>
           </div>
