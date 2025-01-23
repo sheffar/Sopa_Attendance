@@ -1,5 +1,5 @@
 import { BiError } from "react-icons/bi"
-import { FaBook, FaTimesCircle, FaUser } from "react-icons/fa"
+import { FaBook, FaPlus, FaPlusCircle, FaTimesCircle, FaUser } from "react-icons/fa"
 import { FaFlag, FaHouse } from "react-icons/fa6"
 import { useEffect, useState } from "react"
 import SuccessMessage, { Count } from "../Count"
@@ -42,6 +42,7 @@ export const Attendance = () => {
     month: "",
     stateoforigin: "",
     gender: "",
+    area: "",
   })
 
   const validateInput = async () => {
@@ -106,8 +107,10 @@ export const Attendance = () => {
     if (checkInput.gender === "") {
       setError("Please select attendant gender")
       return
-
-
+    }
+    if (checkInput.area === "") {
+      setError("Please input Area")
+      return
     }
 
 
@@ -123,7 +126,6 @@ export const Attendance = () => {
       if (reqData.ok) {
         setShowSuccess(true);
         setShowSuccessMessage(resData)
-        // Clear input fields after successful submission
         setCheckInput({
           phonenumber: "",
           username: "",
@@ -135,8 +137,9 @@ export const Attendance = () => {
           month: "",
           stateoforigin: "",
           gender: "",
+          area: ""
         });
-        setError("");  // Clear errors on successful submission
+        setError("");
       } else {
         console.log(reqData)
         setError(typeof resData.message === 'string' ? resData.message : JSON.stringify(resData.message));
@@ -203,6 +206,10 @@ export const Attendance = () => {
 
   }
 
+  if (Error !== "") {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
   // Hide the success message
   const handleClose = () => {
     setShowSuccess(false);
@@ -241,8 +248,8 @@ export const Attendance = () => {
   return (
     <>
       {Error && (
-        <ErrorMessage className="mx-auto bg-red-500 text-center text-[16px] font-semibold">
-          <p>{Error}</p> {/* Ensure Error is a string */}
+        <ErrorMessage className="mx-auto border border-red-500 text-center text-[16px] font-semibold">
+          <p>{Error}</p>
         </ErrorMessage>
       )}
 
@@ -250,14 +257,16 @@ export const Attendance = () => {
         <SuccessMessage message={showSuccessMessage.message} onClose={handleClose} />
       )}
 
-      <div className={`w-full bg-white ${!hide ? "grid-cols-1" : "md:grid-cols-2"} relative  p-2 grid  gap-2`}>
+      <div className={`w-full mx-auto md:w-1/2 bg-white ${!hide ? "grid-cols-1" : "md:grid-cols-2"} relative  p-2 grid  gap-2`}>
 
         <div className="w-full   flex flex-col gap-2">
           <label htmlFor="phonenumber" className="font-bold text-sm"> Input attendant phone number</label>
 
           <div className="w-full border-2 border-black rounded-md bg-white p-1 flex">
             <input type="text" id="phonenumber" onChange={onchange} value={checkInput.phonenumber} name="phonenumber" className="w-full bg-white font-semibold outline-none" />
-            <p onClick={addUser} className="justify-center text-[15px] rounded-md p-1 cursor-pointer  items-center bg-black text-white"> New</p>
+            <p onClick={addUser} className="justify-center text-[15px] rounded-md p-1 cursor-pointer  items-center bg-black text-white">
+              <FaPlus />
+            </p>
           </div>
         </div>
 
@@ -266,7 +275,6 @@ export const Attendance = () => {
           <label htmlFor="username" className="font-bold text-sm"> Attendant Name</label>
           <div className="w-full border-2 border-black rounded-md bg-white p-1 flex">
             <input type="text" onChange={onchange} value={checkInput.username} name="username" id="username" className="w-full bg-white font-semibold outline-none" />
-            <FaUser className="justify-center text-xl  items-center" />
           </div>
 
         </div>}
@@ -275,7 +283,6 @@ export const Attendance = () => {
 
           <div className="w-full border-2 border-black rounded-md bg-white p-1 flex">
             <input type="text" onChange={onchange} value={checkInput.levelinschool} name="levelinschool" id="levelinschool" className="w-full bg-white font-semibold outline-none" />
-            <FaHouse className="justify-center text-xl  items-center" />
           </div>
 
         </div>}
@@ -286,7 +293,6 @@ export const Attendance = () => {
 
           <div className="w-full border-2 border-black rounded-md bg-white p-1 flex">
             <input type="text" id="lodgename" onChange={onchange} value={checkInput.lodgename} name="lodgename" className="w-full bg-white font-semibold outline-none" />
-            <FaHouse className="justify-center text-xl  items-center" />
           </div>
         </div>}
 
@@ -295,7 +301,6 @@ export const Attendance = () => {
 
           <div className="w-full border-2 border-black rounded-md bg-white p-1 flex">
             <input type="text" id="courseofstudy" onChange={onchange} value={checkInput.courseofstudy} name="courseofstudy" className="w-full bg-white font-semibold outline-none" />
-            <FaBook className="justify-center text-xl  items-center" />
           </div>
         </div>}
 
@@ -304,7 +309,6 @@ export const Attendance = () => {
 
           <div className="w-full border-2 border-black rounded-md bg-white p-1 flex">
             <input type="text" id="dcg" onChange={onchange} value={checkInput.dcg} name="dcg" className="w-full bg-white font-semibold outline-none" />
-            <FaHouse className="justify-center text-xl  items-center" />
           </div>
         </div>}
 
@@ -326,11 +330,10 @@ export const Attendance = () => {
               <option value="Aug-08">Aug</option>
               <option value="Sept-09">Sept</option>
               <option value="Oct-10">Oct</option>
-              <option value="Novem-1">Nov</option>
-              <option value="Decm-12">Dec</option>
+              <option value="Nov-11">Nov</option>
+              <option value="Dec-12">Dec</option>
             </select>
           </div>
-          {/* <p className="w-full bg-red-400"> Error</p> */}
 
         </div>}
 
@@ -340,7 +343,6 @@ export const Attendance = () => {
 
           <div className="w-full border-2 border-black rounded-md bg-white p-1 flex">
             <input type="text" id="stateoforigin" onChange={onchange} value={checkInput.stateoforigin} name="stateoforigin" className="w-full bg-white font-semibold outline-none" />
-            <FaFlag className="justify-center text-xl  items-center" />
           </div>
         </div>}
 
@@ -355,12 +357,20 @@ export const Attendance = () => {
           </select>
         </div>}
 
+        {hide && <div className="w-full flex flex-col gap-2">
+          <label htmlFor="area" className="font-bold text-sm">Area</label>
+
+          <div className="w-full border-2 border-black rounded-md bg-white p-1 flex">
+            <input type="text" id="area" onChange={onchange} value={checkInput.area} name="area" className="w-full bg-white font-semibold outline-none" />
+          </div>
+        </div>}
+
         {hide &&
-          <button className="w-fit  md:w-full p-3 mt-4 shadow-sm hover:translate-y-1  duration-300 shadow-black md:p-2 px-10  bg-black font-semibold text-sm text-white rounded-md mx-auto" onClick={validateInput}> Submit</button>
+          <button className="w-full  p-3 mt-4 shadow-sm hover:-translate-y-1  duration-300 shadow-black md:p-2 px-10  bg-black font-semibold text-sm text-white rounded-md mx-auto" onClick={validateInput}> Submit</button>
         }
 
 
-        {closeError &&
+        {/* {closeError &&
           <div className="absolute -translate-x-1/2 left-1/2 w-full translate-y-1/2 top-1/2 ">
             <ErrorMessage className="bg-black mx-auto items-center flex flex-col relative text-white gap-4 justify-center">
               <FaTimesCircle className="text-2xl absolute top-2 cursor-pointer right-2" onClick={close} />
@@ -370,12 +380,12 @@ export const Attendance = () => {
 
             </ErrorMessage>
           </div>
-        }
+        } */}
 
 
       </div>
-      <Count className="rounded-md my-3">
-        <p className="font-semibold text-sm"> Total Number of Attandent For Today:</p>
+      <Count className="rounded-md my-3 md:w-1/2 mx-auto">
+        <p className="font-semibold text-sm items-center"> Total Attendant For Today:</p>
         <p className="font-bold text-base">{todaysAttandance.length}</p>
       </Count>
 

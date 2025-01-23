@@ -35,7 +35,7 @@ export const AbsenteesComp = () => {
       if (response.ok) {
         setData(result);
       } else {
-        setError(result.message); 
+        setError(result.message);
       }
     } catch (e) {
       console.log("Fetch error:", e.message);
@@ -50,24 +50,25 @@ export const AbsenteesComp = () => {
     <>
 
       <div className="w-full items-center text-center">
-        <button disabled={isLoading}  className={`w-1/2 ${isLoading ? "bg-white" : "bg-black"} text-white p-2 my-2 mx-auto text-center`} onClick={currentUsers}>{isLoading ? <Spinner loading={isLoading}/> : "Abentees"}</button>
+        <button disabled={isLoading} className={`w-1/2 ${isLoading ? "bg-white" : "bg-black"} text-white p-2 my-2 mx-auto text-center`} onClick={currentUsers}>{isLoading ? <Spinner loading={isLoading} /> : "Abentees"}</button>
 
         {Error &&
-          <p className="text-red-600 w-[95%] mx-auto border-2 py-1 my-2 border-red-500 text-center">{Error}</p>
+          <p className="text-red-600 w-full md:w-[90%] mx-auto border-2 py-1 my-2  border-red-500 text-center">{Error}</p>
         }
+
 
         <div className="overflow-x-auto">
           <table className="min-w-full">
             <thead>
-              <tr className="bg-gray-800 text-white">
-                <th className="py-2">Attendees</th>
-                <th className="py-2">Level in School</th>
-                <th className="py-2">Lodge Name</th>
-                <th className="py-2">Phone Number</th>
-                <th className="py-2">Course of Study</th>
-                <th className="py-2">DCG</th>
-                <th className="py-2">State of Origin</th>
-                <th className="py-2">Gender</th>
+              <tr className="bg-black text-white">
+                <th className="py-2 px-4 whitespace-nowrap">Attendees</th>
+                <th className="py-2 px-4 whitespace-nowrap">Level in School</th>
+                <th className="py-2 px-4 whitespace-nowrap">Lodge Name</th>
+                <th className="py-2 px-4 whitespace-nowrap">Phone Number</th>
+                <th className="py-2 px-4 whitespace-nowrap">Course of Study</th>
+                <th className="py-2 px-4 whitespace-nowrap">DCG</th>
+                <th className="py-2 px-4 whitespace-nowrap">State of Origin</th>
+                <th className="py-2 px-4 whitespace-nowrap">Gender</th>
               </tr>
             </thead>
             <tbody>
@@ -86,6 +87,7 @@ export const AbsenteesComp = () => {
             </tbody>
           </table>
         </div>
+
 
       </div>
 

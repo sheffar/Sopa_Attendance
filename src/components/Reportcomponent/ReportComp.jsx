@@ -1,18 +1,17 @@
-import {  useState } from "react";
-import { FaArrowDown } from "react-icons/fa";
+import { useState } from "react";
+import { FaArrowDown, FaDownload } from "react-icons/fa";
 import { Count } from "../Count";
 import { jsPDF } from "jspdf";
-import 'jspdf-autotable';
+import "jspdf-autotable";
 import Spinner from "../Spinner.jsx";
-
-
-
+import * as XLSX from "xlsx";
 
 export const ReportComp = () => {
   const [close, setClose] = useState(false);
   const [data, setData] = useState([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showDownloadOptions, setShowDownloadOptions] = useState(false);
 
   const toggle = () => setClose(!close);
 
@@ -46,19 +45,19 @@ export const ReportComp = () => {
       setLoading(true);
       const reqData = await fetch("https://attendance-backend-rosy.vercel.app/report", {
         method: "POST",
-        headers: { 'Content-Type': 'application/json' },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(dataToSend)
       });
       const resData = await reqData.json();
 
       if (reqData.ok) {
         setData(resData);
+        console.log("The result", resData)
       } else {
-        if(resData.message === "No user was recorded on the specified date"){
-          setData([])
+        if (resData.message === "No user was recorded on the specified date") {
+          setData([]);
         }
         setError(resData.message);
-        
       }
     } catch (error) {
       setError(error.message);
@@ -66,8 +65,6 @@ export const ReportComp = () => {
       setLoading(false);
     }
   };
-
-
 
   const downloadPDF = () => {
     const doc = new jsPDF();
@@ -91,9 +88,11 @@ export const ReportComp = () => {
       "Course of Study",
       "DCG",
       "State of Origin",
-      "Gender"
+      "Gender",
+      "Area",
+      "Timestamp"
     ];
-    const rows = data.map(info => [
+    const rows = data.map((info) => [
       info.username,
       info.levelinschool,
       info.lodgename,
@@ -101,7 +100,9 @@ export const ReportComp = () => {
       info.courseofstudy,
       info.dcg,
       info.stateoforigin,
-      info.gender
+      info.gender,
+      info.area,
+      new Date(info.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     ]);
 
     // Table styling options
@@ -136,20 +137,46 @@ export const ReportComp = () => {
     // Footer
     doc.setFontSize(10);
     doc.setTextColor(150);
-    doc.text(
-      `End of Report | CryptoBot © ${new Date().getFullYear()}`,
-      pageWidth / 2,
-      doc.internal.pageSize.getHeight() - 10,
-      { align: "center" }
-    );
+    doc.text(`${new Date().getFullYear()}`, pageWidth / 2, doc.internal.pageSize.getHeight() - 10, { align: "center" });
 
     // Save the PDF
-    doc.save("Styled_Report.pdf");
+    doc.save("Nifes_Unizik.pdf");
   };
 
+  const downloadExcel = () => {
+    const headers = [
+      "Name",
+      "Level in School",
+      "Lodge Name",
+      "Phone Number",
+      "Course of Study",
+      "DCG",
+      "State of Origin",
+      "Gender",
+      "Timestamp"
+    ];
+    const rows = data.map((info) => ({
+      Name: info.username,
+      "Level in School": info.levelinschool,
+      "Lodge Name": info.lodgename,
+      "Phone Number": info.phonenumber,
+      "Course of Study": info.courseofstudy,
+      DCG: info.dcg,
+      "State of Origin": info.stateoforigin,
+      Gender: info.gender,
+      Timestamp: new Date(info.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) // Format the timestamp
+    }));
+  
+    const worksheet = XLSX.utils.json_to_sheet(rows);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Report");
+  
+    XLSX.writeFile(workbook, "Nifes_Unizik.xlsx");
+  };
+  
 
   if (loading) {
-    return <Spinner loading={loading}/>;
+    return <Spinner loading={loading} />;
   }
 
   return (
@@ -162,7 +189,9 @@ export const ReportComp = () => {
             <p className="font-semibold text-sm">Get Report By</p>
             <FaArrowDown className="ml-2" />
           </div>
-          <button className="h-full bg-black text-white rounded-md p-1 hover:bg-gray-800" onClick={submit}>Get Report</button>
+          <button className="h-full bg-black text-white rounded-md p-1 hover:bg-gray-800" onClick={submit}>
+            Get Report
+          </button>
         </div>
 
         <Count>
@@ -186,15 +215,17 @@ export const ReportComp = () => {
         <div className="overflow-x-auto">
           <table className="min-w-full">
             <thead>
-              <tr className="bg-gray-800 text-white">
-                <th className="py-2">Name</th>
-                <th className="py-2">Level in School</th>
-                <th className="py-2">Lodge Name</th>
-                <th className="py-2">Phone Number</th>
-                <th className="py-2">Course of Study</th>
-                <th className="py-2">DCG</th>
-                <th className="py-2">State of Origin</th>
-                <th className="py-2">Gender</th>
+              <tr className="bg-black text-white">
+                <th className="py-2 px-4 whitespace-nowrap">Name</th>
+                <th className="py-2 px-4 whitespace-nowrap">Level in School</th>
+                <th className="py-2 px-4 whitespace-nowrap">Lodge Name</th>
+                <th className="py-2 px-4 whitespace-nowrap">Phone Number</th>
+                <th className="py-2 px-4 whitespace-nowrap">Course of Study</th>
+                <th className="py-2 px-4 whitespace-nowrap">DCG</th>
+                <th className="py-2 px-4 whitespace-nowrap">State of Origin</th>
+                <th className="py-2 px-4 whitespace-nowrap">Gender</th>
+                <th className="py-2 px-4 whitespace-nowrap">Area</th>
+                <th className="py-2 px-4 whitespace-nowrap">TimeStamp</th>
               </tr>
             </thead>
             <tbody>
@@ -208,20 +239,37 @@ export const ReportComp = () => {
                   <td className="py-2 px-4">{info.dcg}</td>
                   <td className="py-2 px-4">{info.stateoforigin}</td>
                   <td className="py-2 px-4">{info.gender}</td>
+                  <td className="py-2 px-4">{info.area}</td>
+                  <td className="py-2 px-4">
+                    {new Date(info.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
 
-        {/* Download PDF Button */}
+        {data.length > 0 && (
+          <>
+            <button
+              className="mt-4 bg-blue-500 text-white rounded-md p-2 flex items-center gap-4 hover:bg-blue-600"
+              onClick={() => setShowDownloadOptions(!showDownloadOptions)}
+            >
+              Download Report <FaDownload />
+            </button>
 
-        {data.length > 0 &&
-          <button className="mt-4 bg-blue-500 text-white rounded-md p-2 hover:bg-blue-600" onClick={downloadPDF}>
-            Download Report as PDF
-          </button>
-        }
-
+            {showDownloadOptions && (
+              <div className="flex gap-2 mt-2">
+                <button className="bg-gray-800 text-white rounded-md p-2 hover:bg-gray-700" onClick={downloadPDF}>
+                  Download as PDF
+                </button>
+                <button className="bg-gray-800 text-white rounded-md p-2 hover:bg-gray-700" onClick={downloadExcel}>
+                  Download as Excel
+                </button>
+              </div>
+            )}
+          </>
+        )}
       </div>
     </>
   );
