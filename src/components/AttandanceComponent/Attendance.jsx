@@ -1,6 +1,4 @@
-import { BiError } from "react-icons/bi"
-import { FaBook, FaPlus, FaPlusCircle, FaTimesCircle, FaUser } from "react-icons/fa"
-import { FaFlag, FaHouse } from "react-icons/fa6"
+import { FaPlus, } from "react-icons/fa"
 import { useEffect, useState } from "react"
 import SuccessMessage, { Count } from "../Count"
 import { ErrorMessage } from "../ErrorMessage"
@@ -43,6 +41,7 @@ export const Attendance = () => {
     stateoforigin: "",
     gender: "",
     area: "",
+    weeknumber: ""
   })
 
   const validateInput = async () => {
@@ -124,8 +123,9 @@ export const Attendance = () => {
       const resData = await reqData.json()
 
       if (reqData.ok) {
+        console.log(resData.message)
         setShowSuccess(true);
-        setShowSuccessMessage(resData)
+        setShowSuccessMessage(resData.message)
         setCheckInput({
           phonenumber: "",
           username: "",
@@ -162,10 +162,11 @@ export const Attendance = () => {
 
 
       if (response.ok) {
+
         setTodaysAttandance(result)
 
       } else {
-        console.log(e.message)
+        console.log(response)
       }
     } catch (e) {
       console.log(e.message)
@@ -181,7 +182,8 @@ export const Attendance = () => {
         method: "POST",
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          phonenumber: checkInput.phonenumber
+          phonenumber: checkInput.phonenumber,
+          weeknumber: checkInput.weeknumber
         })
       })
 
@@ -189,12 +191,9 @@ export const Attendance = () => {
 
 
       if (reqData.ok) {
-        // setApiNames(resData)
-        console.log(resData.message)
-      } else {
-        console.log(resData.message)
-        setError(resData.message);
 
+      } else {
+        setError(resData.message);
 
       }
 
@@ -239,7 +238,6 @@ export const Attendance = () => {
   }
 
 
-
   if (loading) {
     return <Spinner loading={loading} />;
   }
@@ -254,10 +252,23 @@ export const Attendance = () => {
       )}
 
       {showSuccess && (
-        <SuccessMessage message={showSuccessMessage.message} onClose={handleClose} />
+        <SuccessMessage message={showSuccessMessage} onClose={handleClose} />
       )}
 
       <div className={`w-full mx-auto md:w-1/2 bg-white ${!hide ? "grid-cols-1" : "md:grid-cols-2"} relative  p-2 grid  gap-2`}>
+
+
+        <div className="w-full border-2 flex gap-1 border-black rounded-md bg-white ">
+          <select name="weeknumber" className="w-full bg-white font-medium text-black  p-1  border-black" onChange={onchange} value={checkInput.weeknumber} id="weeknumber">
+            <option value="">Select the week  *Optional</option>
+            <option value="1">Last sunday</option>
+            <option value="">This Week</option>
+          </select>
+        </div>
+
+
+
+
 
         <div className="w-full   flex flex-col gap-2">
           <label htmlFor="phonenumber" className="font-bold text-sm"> Input attendant phone number</label>
@@ -369,18 +380,6 @@ export const Attendance = () => {
           <button className="w-full  p-3 mt-4 shadow-sm hover:-translate-y-1  duration-300 shadow-black md:p-2 px-10  bg-black font-semibold text-sm text-white rounded-md mx-auto" onClick={validateInput}> Submit</button>
         }
 
-
-        {/* {closeError &&
-          <div className="absolute -translate-x-1/2 left-1/2 w-full translate-y-1/2 top-1/2 ">
-            <ErrorMessage className="bg-black mx-auto items-center flex flex-col relative text-white gap-4 justify-center">
-              <FaTimesCircle className="text-2xl absolute top-2 cursor-pointer right-2" onClick={close} />
-
-              <BiError className=" text-4xl" />
-              <p>username</p>
-
-            </ErrorMessage>
-          </div>
-        } */}
 
 
       </div>
