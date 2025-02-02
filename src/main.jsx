@@ -10,6 +10,8 @@ import { LoginPage } from './pages/LoginPage.jsx';
 import { SignupPage } from './pages/SignupPage.jsx';
 import { Absentees } from './pages/Absentees.jsx';
 import { BottomNav } from './components/MobieNav.jsx';
+import { UsersComp } from './components/Users/UsersComp.jsx';
+import { EditUserPage } from './pages/EditUserPage.jsx';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -21,6 +23,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <Route path='/' element={<Home />} />
         <Route path='/login' element={<LoginPage />} />
         <Route path='/signup' element={<SignupPage />} />
+        <Route path='/users' element={<UsersComp />} />
+        <Route path='/edituser/:userId' element={<EditUserPage />} />
         <Route path='*' element={<Notfound />} />
       </Routes>
       <BottomNav />

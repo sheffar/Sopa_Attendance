@@ -1,8 +1,10 @@
-import { FaPlus, } from "react-icons/fa"
+import { FaPlus, FaTrash, } from "react-icons/fa"
 import { useEffect, useState } from "react"
 import SuccessMessage, { Count } from "../Count"
 import { ErrorMessage } from "../ErrorMessage"
 import Spinner from "../Spinner"
+import { BiEdit } from "react-icons/bi"
+import { Link } from "react-router-dom"
 
 export const Attendance = () => {
 
@@ -173,9 +175,30 @@ export const Attendance = () => {
     }
   }
 
+  // Handle delete user
+  const handleDelete = async (userId) => {
+    if (!window.confirm("Are you sure you want to delete this user?")) return;
+
+    try {
+      const response = await fetch(`https://attendance-backend-rosy.vercel.app/delete-users/${userId}`, {
+        method: "DELETE",
+      });
+
+      const result = await response.json();
+      if (response.ok) {
+        alert("User deleted successfully!, refresh this page");
+        setUsers(users.filter((user) => user._id !== userId)); // Remove deleted user from state
+      } else {
+        alert(result.message);
+      }
+    } catch (error) {
+      console.error("Error deleting user:", error);
+    }
+  };
+
+
 
   const checkPhoneNumber = async () => {
-    console.log(checkInput.phonenumber)
 
     try {
       const reqData = await fetch("https://attendance-backend-rosy.vercel.app/attendance", {
@@ -222,6 +245,7 @@ export const Attendance = () => {
   }, [phoneNumberLength])
 
   useEffect(() => {
+
     currentUsers()
 
   }, [])
@@ -382,6 +406,7 @@ export const Attendance = () => {
 
 
 
+
       </div>
       <Count className="rounded-md my-3 md:w-1/2 mx-auto">
         <p className="font-semibold text-sm items-center"> Total Attendant For Today:</p>
@@ -389,6 +414,25 @@ export const Attendance = () => {
       </Count>
 
 
+      <div className="w-full mx-auto md:w-1/2 my-5 flex flex-col gap-3">
+        {todaysAttandance && todaysAttandance.length > 0 ? (
+          todaysAttandance.map((el) => (
+            <p key={el._id} className="flex justify-between text-black">
+              {el.userId?.username || "Unknown"} {/* Ensure it doesn't break if userId is missing */}
+
+              <span className="flex items-center gap-3">
+                <Link to={`/edituser/${el?.userId._id}`} className=" text-black  rounded">
+              <BiEdit size={20}/>
+                </Link>
+                <FaTrash className="cursor-pointer" onClick={() => handleDelete(el._id)} size={17} />
+
+              </span>
+            </p>
+          ))
+        ) : (
+          <p>No attendance records found.</p>
+        )}
+      </div>
 
     </>
   )

@@ -1,4 +1,4 @@
-import { BiSolidHomeCircle, BiUserMinus } from "react-icons/bi"
+import { BiSolidHomeCircle, BiUserCheck, BiUserMinus } from "react-icons/bi"
 import { BsHeart, BsReceipt } from "react-icons/bs"
 import { Link, useLocation } from "react-router-dom"
 
@@ -17,7 +17,7 @@ export const BottomNav = () => {
                     <Link to={"/"}>  <BiSolidHomeCircle size={18} className=" cursor-pointer" /> </Link>
                     <Link to={"/report"}>  <BsReceipt size={18} className=" cursor-pointer" /> </Link>
                     <Link to={"/absentees"}> <BiUserMinus size={18} className=" cursor-pointer" /> </Link>
-                    <Link to={"/"}> <BiSolidHomeCircle size={15} className=" cursor-pointer" /> </Link>
+                    <Link to={"/users"}> <BiUserCheck size={18} className=" cursor-pointer" /> </Link>
                 </div>
             }
 
