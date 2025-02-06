@@ -72,7 +72,7 @@ export const ReportComp = () => {
 
     // Add title
     doc.setFontSize(18);
-    doc.text("Nifes Unizik Monthly Report", pageWidth / 2, 20, { align: "center" });
+    doc.text("Nifes SOPA Monthly Report", pageWidth / 2, 20, { align: "center" });
 
     // Add subtitle
     doc.setFontSize(12);
@@ -140,7 +140,7 @@ export const ReportComp = () => {
     doc.text(`${new Date().getFullYear()}`, pageWidth / 2, doc.internal.pageSize.getHeight() - 10, { align: "center" });
 
     // Save the PDF
-    doc.save("Nifes_Unizik.pdf");
+    doc.save("Nifes_SOPA.pdf");
   };
 
   const downloadExcel = () => {
@@ -171,7 +171,7 @@ export const ReportComp = () => {
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Report");
   
-    XLSX.writeFile(workbook, "Nifes_Unizik.xlsx");
+    XLSX.writeFile(workbook, "Nifes_SOPA.xlsx");
   };
   
 
