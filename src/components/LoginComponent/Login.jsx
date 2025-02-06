@@ -45,7 +45,7 @@ export const Login = () => {
         try {
             setLoading(true)
 
-            const reqData = await fetch("https://nifes-attendance-backend.vercel.app/login", {
+            const reqData = await fetch("https://sopa-backend.vercel.app/login", {
                 method: "POST",
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

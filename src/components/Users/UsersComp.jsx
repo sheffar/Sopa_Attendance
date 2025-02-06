@@ -10,7 +10,7 @@ export const UsersComp = () => {
   const AllUsers = async () => {
     try {
       setIsLoading(true)
-      const response = await fetch(`https://attendance-backend-rosy.vercel.app/allUsers`)
+      const response = await fetch(`https://sopa-backend.vercel.app/allUsers`)
       const result = await response.json()
 
       if (response.ok) {

@@ -43,7 +43,7 @@ export const ReportComp = () => {
 
     try {
       setLoading(true);
-      const reqData = await fetch("https://attendance-backend-rosy.vercel.app/report", {
+      const reqData = await fetch("https://sopa-backend.vercel.app/report", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(dataToSend)

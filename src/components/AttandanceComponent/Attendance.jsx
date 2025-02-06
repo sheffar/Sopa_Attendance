@@ -117,7 +117,7 @@ export const Attendance = () => {
 
     try {
       setLoading(true)
-      const reqData = await fetch("https://attendance-backend-rosy.vercel.app/submit", {
+      const reqData = await fetch("https://sopa-backend.vercel.app/submit", {
         method: "POST",
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(checkInput),
@@ -159,7 +159,7 @@ export const Attendance = () => {
   const currentUsers = async () => {
 
     try {
-      const response = await fetch("https://attendance-backend-rosy.vercel.app/currentusers")
+      const response = await fetch("https://sopa-backend.vercel.app/currentusers")
       const result = await response.json()
 
 
@@ -180,7 +180,7 @@ export const Attendance = () => {
     if (!window.confirm("Are you sure you want to delete this user?")) return;
 
     try {
-      const response = await fetch(`https://attendance-backend-rosy.vercel.app/delete-users/${userId}`, {
+      const response = await fetch(`https://sopa-backend.vercel.app/delete-users/${userId}`, {
         method: "DELETE",
       });
 
@@ -201,7 +201,7 @@ export const Attendance = () => {
   const checkPhoneNumber = async () => {
 
     try {
-      const reqData = await fetch("https://attendance-backend-rosy.vercel.app/attendance", {
+      const reqData = await fetch("https://sopa-backend.vercel.app/attendance", {
         method: "POST",
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

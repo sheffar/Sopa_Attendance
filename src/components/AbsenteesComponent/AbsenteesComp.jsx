@@ -29,7 +29,7 @@ export const AbsenteesComp = () => {
 
     setIsLoading(true);
     try {
-      const response = await fetch(`https://attendance-backend-rosy.vercel.app/absentees?${queryParams.toString()}`);
+      const response = await fetch(`https://sopa-backend.vercel.app/absentees?${queryParams.toString()}`);
       const result = await response.json();
 
       if (response.ok) {

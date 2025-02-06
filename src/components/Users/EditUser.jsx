@@ -13,7 +13,7 @@ export const EditUserComp = () => {
         const fetchUser = async () => {
             try {
                 const response = await fetch(
-                    `https://attendance-backend-rosy.vercel.app/find-user/${userId}`
+                    `https://sopa-backend.vercel.app/find-user/${userId}`
                 )
                 const result = await response.json()
 
